@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NovaStock — know what to reorder, before you run out</title>
+<meta name="description" content="NovaStock turns the stock record a small retailer already keeps into an explainable reorder decision. Built in Lubumbashi, DR Congo.">
+<meta name="theme-color" content="#0e2a24">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230e2a24'/><path d='M8 21V11h3l6 7v-7h3v10h-3l-6-7v7z' fill='%23ffffff'/></svg>">
+
+<!-- Social preview: absolute URLs, so crawlers resolve them from any share context.
+     If this site ever moves to another domain, update the three full URLs below
+     (og:url, og:image, twitter:image) to the new one. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="NovaStock — know what to reorder, before you run out">
+<meta property="og:description" content="Four of the five retailers we interviewed already keep a stock record. NovaStock finishes the calculation their spreadsheet cannot.">
+<meta property="og:image" content="https://novastock-cocreat-pitch.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="NovaStock — reorder decisions for African retailers">
+<meta property="og:url" content="https://novastock-cocreat-pitch.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NovaStock — know what to reorder, before you run out">
+<meta name="twitter:description" content="The record exists. The decision does not. NovaStock supplies the supplier lead times a stock file cannot hold.">
+<meta name="twitter:image" content="https://novastock-cocreat-pitch.vercel.app/og.png">
+
+<style>
+:root{
+  --ink:#101a17; --deep:#0e2a24; --deep-2:#123a31;
+  --cream:#fbfaf7; --tint:#f3f1ea; --line:#e4e0d6;
+  --muted:#5d6b64; --accent:#1f7a5c; --accent-soft:#e3f1ea; --amber:#c9761b;
+  --on-deep:#eaf4f0; --on-deep-2:#9dbdb2;
+  --r:14px; --max:1080px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--cream); color:var(--ink);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{line-height:1.15; letter-spacing:-.02em; margin:0}
+p{margin:0}
+a{color:inherit}
+img{max-width:100%}
+.wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+.skip{position:absolute; left:-9999px}
+.skip:focus{left:12px; top:12px; background:#fff; padding:10px 16px; border-radius:8px; z-index:100}
+
+/* nav */
+nav{position:sticky; top:0; z-index:50; background:rgba(251,250,247,.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+.nav-in{display:flex; align-items:center; gap:26px; height:64px}
+.brand{font-weight:700; letter-spacing:-.03em; font-size:1.1rem; text-decoration:none}
+.brand span{color:var(--accent)}
+.nav-links{display:flex; gap:22px; margin-left:auto; font-size:.9rem; color:var(--muted)}
+.nav-links a{text-decoration:none}
+.nav-links a:hover{color:var(--ink)}
+.btn{
+  display:inline-block; background:var(--deep); color:#fff; text-decoration:none;
+  padding:11px 20px; border-radius:999px; font-size:.9rem; font-weight:600;
+}
+.btn:hover{background:var(--deep-2)}
+@media(max-width:860px){ .nav-links{display:none} }
+
+/* tl;dr banner */
+.banner{background:var(--deep); color:var(--on-deep)}
+.banner .wrap{padding:30px 24px 28px}
+.eyebrow{font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--on-deep-2); font-weight:600}
+.banner-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(186px,1fr)); gap:24px 32px; margin-top:16px}
+.banner-grid h4{margin:0 0 6px; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--on-deep-2); font-weight:600}
+.banner-grid p{margin:0; font-size:.92rem; color:#fff; line-height:1.5}
+
+/* hero */
+.hero{padding:76px 0 84px; background:linear-gradient(180deg,var(--cream),#fff)}
+.hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center}
+@media(max-width:940px){ .hero-grid{grid-template-columns:1fr; gap:44px} }
+h1{font-size:clamp(2.1rem,5vw,3.35rem); font-weight:800}
+.sub{margin-top:22px; font-size:1.08rem; color:var(--muted); max-width:56ch}
+.tag{
+  display:inline-block; margin-bottom:20px; font-size:.76rem; font-weight:600; letter-spacing:.04em;
+  background:var(--accent-soft); color:#14614a; padding:6px 13px; border-radius:999px;
+}
+.cta{margin-top:30px; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+.ghost{display:inline-block; padding:11px 20px; border-radius:999px; border:1px solid var(--line); text-decoration:none; font-size:.9rem; font-weight:600; background:#fff}
+.facts{display:flex; gap:26px; flex-wrap:wrap; margin-top:34px; font-size:.84rem; color:var(--muted)}
+.facts b{display:block; font-size:1.3rem; color:var(--ink); letter-spacing:-.02em}
+
+/* phone prototype */
+.phone{
+  background:var(--deep); border-radius:34px; padding:16px; box-shadow:0 30px 60px -24px rgba(16,26,23,.45);
+  max-width:360px; margin:0 auto;
+}
+.screen{background:#fff; border-radius:22px; overflow:hidden; min-height:430px; display:flex; flex-direction:column}
+.screen-top{background:var(--deep-2); color:#fff; padding:14px 16px; display:flex; align-items:center; gap:10px; font-size:.82rem}
+.dot{width:8px; height:8px; border-radius:99px; background:#5fd39c}
+.switch{margin-left:auto; display:flex; align-items:center; gap:7px; font-size:.72rem; color:#cfe6dd; cursor:pointer; user-select:none}
+.switch input{accent-color:#5fd39c}
+.tabs{display:flex; border-bottom:1px solid var(--line)}
+.tab{flex:1; text-align:center; padding:11px 6px; font-size:.78rem; font-weight:600; color:var(--muted); cursor:pointer; background:none; border:0; font-family:inherit}
+.tab[aria-selected="true"]{color:var(--accent); box-shadow:inset 0 -2px 0 var(--accent)}
+.list{padding:8px 0; overflow:auto; flex:1}
+.item{display:flex; align-items:center; gap:12px; padding:11px 16px; border-bottom:1px solid #f1efe9; font-size:.83rem}
+.item:last-child{border-bottom:0}
+.item .nm{flex:1; min-width:0}
+.item .nm b{display:block; font-size:.85rem; font-weight:600}
+.item .nm small{color:var(--muted); font-size:.72rem}
+.pill{font-size:.68rem; font-weight:700; padding:4px 9px; border-radius:999px; white-space:nowrap}
+.pill.ok{background:var(--accent-soft); color:#14614a}
+.pill.low{background:#fdecd8; color:#8a4f10}
+.qty{font-weight:700}
+.screen-foot{padding:11px 16px; background:#faf9f5; border-top:1px solid var(--line); font-size:.72rem; color:var(--muted); text-align:center}
+.hint{margin-top:14px; text-align:center; font-size:.78rem; color:var(--muted)}
+
+/* sections */
+.sec{padding:74px 0}
+.tint{background:var(--tint)}
+.sec-head{max-width:66ch}
+h2{font-size:clamp(1.6rem,3.4vw,2.35rem); font-weight:800}
+.lead{margin-top:16px; font-size:1.03rem; color:var(--muted)}
+.grid3{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; margin-top:42px}
+.card{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:24px}
+.card h3{font-size:1.02rem; margin-bottom:9px}
+.card p{font-size:.92rem; color:var(--muted)}
+.chip{display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin-bottom:11px}
+.chip.next{color:var(--amber)}
+
+/* stats */
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px; margin-top:40px}
+.stat{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:24px}
+.num{font-size:2rem; font-weight:800; letter-spacing:-.03em; color:var(--deep)}
+.stat .lbl{margin-top:10px; font-size:.92rem; color:var(--ink)}
+.src{margin-top:14px; font-size:.74rem; color:var(--muted); border-top:1px solid var(--line); padding-top:11px}
+.honest{margin-top:34px; padding:18px 20px; background:#fff; border-left:3px solid var(--amber); border-radius:8px; font-size:.9rem; color:var(--muted)}
+
+/* split + rule */
+.split{display:grid; grid-template-columns:1.15fr .85fr; gap:44px; align-items:start; margin-top:48px}
+@media(max-width:880px){ .split{grid-template-columns:1fr} }
+.bullets{margin:0; padding-left:20px}
+.bullets li{margin-bottom:13px; font-size:.95rem; color:var(--muted)}
+.bullets li strong{color:var(--ink)}
+.rule{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:26px}
+.rule h3{font-size:1.05rem; margin-bottom:14px}
+.row{display:flex; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px dashed var(--line); font-size:.9rem}
+.row:last-child{border-bottom:0}
+.row .k{color:var(--muted)}
+.row .v{font-weight:700; text-align:right}
+.fine{font-size:.9rem; color:var(--muted)}
+
+/* flow */
+.flow{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; margin-top:42px}
+.fstep{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:24px}
+.bar{height:4px; border-radius:99px; background:var(--line); margin-bottom:16px}
+.bar.live{background:var(--accent)}
+.bar.soon{background:var(--amber)}
+.st{display:inline-block; margin-top:14px; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+
+/* two-col boxes */
+.two{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:40px}
+@media(max-width:780px){ .two{grid-template-columns:1fr} }
+.box{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:26px}
+.box h3{font-size:1.05rem; margin-bottom:16px}
+
+/* plans */
+.plans{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; margin-top:40px}
+.plan{background:#fff; border:1px solid var(--line); border-radius:var(--r); padding:28px; display:flex; flex-direction:column}
+.plan .price{margin:16px 0 6px; font-size:2.1rem; font-weight:800; letter-spacing:-.03em}
+.plan .price small{font-size:.84rem; font-weight:500; color:var(--muted); letter-spacing:0}
+.plans-foot{margin-top:24px; padding:20px; background:var(--tint); border-radius:var(--r)}
+.plans-foot strong{display:block; margin-bottom:7px}
+.plans-foot span{font-size:.9rem; color:var(--muted)}
+
+/* founder */
+.founder{display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:start; margin-top:36px}
+.avatar{width:78px; height:78px; border-radius:20px; background:var(--deep); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.5rem}
+.tags{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px}
+.tags span{font-size:.74rem; background:#fff; border:1px solid var(--line); padding:6px 12px; border-radius:999px; color:var(--muted)}
+
+/* contact + footer */
+.contact{background:var(--deep); color:var(--on-deep); padding:76px 0; text-align:center}
+.contact h2{color:#fff}
+.contact .lead{color:var(--on-deep-2)}
+.mail{display:inline-block; margin-top:26px; font-size:1.15rem; font-weight:700; color:#fff}
+.loc{margin-top:16px; font-size:.84rem; color:var(--on-deep-2)}
+footer{background:#0b211c; color:#8fada3; padding:34px 0; font-size:.8rem}
+.foot-in{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.disc{margin-top:18px; padding-top:18px; border-top:1px solid rgba(255,255,255,.1); font-size:.74rem; color:#7d9a91; max-width:80ch}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav aria-label="Main">
+  <div class="wrap nav-in">
+    <a class="brand" href="#main">Nova<span>Stock</span></a>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#market">Market</a>
+      <a href="#flow">Product</a>
+      <a href="#positioning">Why us</a>
+      <a href="#ai">AI</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#status">Status</a>
+    </div>
+    <a class="btn" href="#contact">Get in touch</a>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ============ IN TWENTY SECONDS ============ -->
+<section class="banner" aria-label="Summary">
+  <div class="wrap">
+    <p class="eyebrow">In twenty seconds</p>
+    <div class="banner-grid">
+      <div>
+        <h4>What</h4>
+        <p>Turns the stock record a shop already keeps into an explainable reorder decision: what to reorder, how many, and why — by supplying the supplier lead times their spreadsheet cannot hold.</p>
+      </div>
+      <div>
+        <h4>Who for</h4>
+        <p>Independent shopkeepers in Lubumbashi, DR Congo: the informal last mile of consumer-goods distribution.</p>
+      </div>
+      <div>
+        <h4>Why now</h4>
+        <p>34M active mobile money accounts, roughly one person in five online, and a national financial-inclusion target of 65% by 2028.</p>
+      </div>
+      <div>
+        <h4>Where we are</h4>
+        <p>Pre-MVP. Retailer interviews, the full journey, the interface design and a working prototype of Record and Reorder. No production app, no pilot retailers, no revenue.</p>
+      </div>
+      <div>
+        <h4>Ask</h4>
+        <p>CoCreate Pitch 2026 — Students Track, London Finals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="tag">Built in Lubumbashi, DR Congo</span>
+      <h1>Know what to reorder, before you run out.</h1>
+      <p class="sub">The shops I interviewed already record their stock — four of the five of them, in Excel, on a PC behind the counter. The record is not the problem. NovaStock finishes the calculation their spreadsheet cannot: because it knows how long the supplier takes, it can say what to reorder, how many, and why. Then it connects the order to approved suppliers, so African retailers become buyers on Alibaba.com.</p>
+      <div class="cta">
+        <a class="btn" href="#flow">See how it works</a>
+        <a class="ghost" href="#status">What exists today</a>
+      </div>
+      <div class="facts">
+        <div><b>4 of 5</b>retailers interviewed already keep a stock file</div>
+        <div><b>15–25%</b>retail margin in DR Congo (ITA)</div>
+        <div><b>34M</b>mobile money accounts in DR Congo</div>
+      </div>
+    </div>
+
+    <!-- interactive prototype -->
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="screen-top">
+            <span class="dot"></span><span>NovaStock</span>
+            <label class="switch"><input type="checkbox" id="offline"> Offline mode</label>
+          </div>
+          <div class="tabs" role="tablist">
+            <button class="tab" id="tab-count" role="tab" aria-selected="true">Record</button>
+            <button class="tab" id="tab-reorder" role="tab" aria-selected="false">Reorder</button>
+          </div>
+          <div class="list" id="list"></div>
+          <div class="screen-foot" id="foot">Sample data. Nothing is stored.</div>
+        </div>
+      </div>
+      <p class="hint">Live prototype of Record and Reorder, running on sample data — try the Offline switch.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PROBLEM ============ -->
+<section class="sec" id="problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Stock decisions are guesses, and guesses cost cash.</h2>
+      <p class="lead">The record exists. The decision does not — a stock file has no idea how long a supplier takes, so the reorder still gets worked out by hand. And sourcing abroad still carries no reliability signal, and still cannot be paid the way these owners actually pay.</p>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <span class="chip">First MVP</span>
+        <h3>Reordering by gut feel</h3>
+        <p>Excel holds the sales rate but not supplier lead times, so the calculation can never be finished in the shop. Owners still decide by hand — and several told me they struggle with it.</p>
+      </div>
+      <div class="card">
+        <span class="chip next">Next</span>
+        <h3>Sourcing without a signal</h3>
+        <p>Comparing international suppliers by hand takes days and says nothing about who delivers on time.</p>
+      </div>
+      <div class="card">
+        <span class="chip next">Then</span>
+        <h3>Paying across borders</h3>
+        <p>Wire transfers and foreign bank accounts do not fit how most owners pay. They use mobile money.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAN-AFRICAN MARKET ============ -->
+<section class="sec tint" id="market">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Small retailers are the heart of African business.</h2>
+      <p class="lead">Three published figures that frame the opportunity.</p>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="num">Up to 90%</div>
+        <p class="lbl">of businesses in sub-Saharan Africa are SMEs.</p>
+        <p class="src">IFC press release, April 2023</p>
+      </div>
+      <div class="stat">
+        <div class="num">38%</div>
+        <p class="lbl">of the region's GDP comes from those SMEs.</p>
+        <p class="src">IFC press release, April 2023</p>
+      </div>
+      <div class="stat">
+        <div class="num">39–63%</div>
+        <p class="lbl">of SMEs work in trade or retail: 39% in South Africa, 42% in Nigeria, 63% in Kenya.</p>
+        <p class="src">Visa, The Rise of SMEs</p>
+      </div>
+    </div>
+    <p class="honest">None of these figures is specific to DR Congo. Measuring how Lubumbashi retailers really restock is part of our first pilot — see the next section for what we do know about this market.</p>
+  </div>
+</section>
+
+<!-- ============ DRC MARKET ============ -->
+<section class="sec" id="drc">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>In DR Congo, the last mile is small, informal — and already keeping records.</h2>
+      <p class="lead">Published figures specific to this market, and one number we still owe you.</p>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="num">10–20%</div>
+        <p class="lbl">is what a DRC wholesaler keeps as margin on the selling price. A retailer keeps 15–25%.</p>
+        <p class="src">U.S. International Trade Administration, DRC Country Commercial Guide, updated 20 Feb 2026</p>
+      </div>
+      <div class="stat">
+        <div class="num">~4%</div>
+        <p class="lbl">of annual sales is what stockouts cost a retailer, because shoppers take roughly half of a potential purchase elsewhere.</p>
+        <p class="src">Rosales, Whipple &amp; Blackhurst — organised retail. An order of magnitude, not a local measure.</p>
+      </div>
+      <div class="stat">
+        <div class="num">34M</div>
+        <p class="lbl">active mobile money accounts in the DRC, against roughly one person in five using the internet.</p>
+        <p class="src">ARPTC data, 2025–2026</p>
+      </div>
+    </div>
+
+    <div class="split">
+      <div>
+        <h3 style="font-size:1.25rem">What the structure of this market tells us</h3>
+        <ul class="bullets" style="margin-top:18px">
+          <li>Goods move importers → wholesalers → retailers. <strong>Lubumbashi is one of the country's principal distribution centres.</strong></li>
+          <li>The informal share of that distribution <strong>grows whenever the economy tightens</strong>, and many trading firms already run part of their business through informal channels.</li>
+          <li>Small Congolese businesses are, in the ITA's own words, <strong>"generally unable to obtain credit"</strong> and "often ignored by chambers of commerce".</li>
+          <li>The government's own National Financial Inclusion Strategy 2023–2028 targets moving financial inclusion from 38.5% (2022) to 65% by 2028.</li>
+        </ul>
+      </div>
+      <div class="rule">
+        <h3>Why the record is not the product</h3>
+        <p class="fine">A dollar locked in overstock is a dollar of working capital gone, in a market where credit is out of reach. These shops already keep the record — what they cannot finish is the decision.</p>
+        <div class="row" style="margin-top:18px"><span class="k">A record with lead times</span><span class="v">becomes an order</span></div>
+        <div class="row"><span class="k">An order that is placed</span><span class="v">becomes a supplier relationship</span></div>
+        <div class="row"><span class="k">A buyer with a history</span><span class="v">is what a supplier abroad needs</span></div>
+      </div>
+    </div>
+
+    <p class="lead" style="margin-top:40px; color:var(--ink)"><strong>What the first interviews changed.</strong> I went in expecting shops with no records at all, and that assumption was wrong. Four of the five retailers I interviewed already track their stock in Excel, on a PC behind the counter. So the gap is not recording — it is the join between the record and the decision, and that is where NovaStock sits. The build order changed accordingly: onboarding now starts from the file they already have, not from retyping.</p>
+
+    <p class="honest"><strong>What we still owe you:</strong> the number of retail outlets in DR Congo, and in Lubumbashi. We have not found a figure we can defend, so we are not going to invent one — measuring how Lubumbashi retailers really restock is the first job of our pilot.</p>
+  </div>
+</section>
+
+<!-- ============ FLOW ============ -->
+<section class="sec tint" id="flow">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>From a shelf count to a paid order, in four steps.</h2>
+      <p class="lead">NovaStock starts where the record already is: in the file the shop keeps today. Every later step builds on it.</p>
+    </div>
+    <div class="flow">
+      <div class="fstep">
+        <div class="bar live"></div>
+        <h3>Record</h3>
+        <p>Keep counting the way you already do, or import the Excel file that already holds months of it. Offline-first, so a dropped connection never breaks the record.</p>
+        <span class="st">First MVP</span>
+      </div>
+      <div class="fstep">
+        <div class="bar live"></div>
+        <h3>Reorder</h3>
+        <p>An explainable signal: what to reorder, how much, and why. Rules first, AI-assisted signals as the data builds. Never a black box.</p>
+        <span class="st">First MVP</span>
+      </div>
+      <div class="fstep">
+        <div class="bar soon"></div>
+        <h3>Source</h3>
+        <p>Match the flagged product to suppliers, including international ones on Alibaba.com, ranked on price, reliability and lead time.</p>
+        <span class="st">Next</span>
+      </div>
+      <div class="fstep">
+        <div class="bar soon"></div>
+        <h3>Pay</h3>
+        <p>Mobile money or card checkout for cross-border supplier payment, with no foreign bank account.</p>
+        <span class="st">Then</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE RULE ============ -->
+<section class="sec" id="rule">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The reorder rule fits on one line.</h2>
+      <p class="lead">Reorder when the shelf holds no more than the units you will sell before the supplier delivers, plus a safety margin. The owner can check every number, and so can you.</p>
+    </div>
+    <div class="split">
+      <div>
+        <ul class="bullets">
+          <li>Inputs the owner already knows: what sells per day, and how long the supplier takes.</li>
+          <li>Reasons you can audit: every figure in the answer traces back to a number on the shelf or a delivery the owner has already waited for.</li>
+          <li>The prototype at the top of this page uses exactly this rule, on sample data.</li>
+        </ul>
+        <p class="honest"><strong>What we are not claiming:</strong> this is decades-old inventory theory, not an invention. What is new is making it operable at the informal last mile — offline, with no barcodes — and making it explainable enough that an owner acts on it.</p>
+      </div>
+      <div class="rule">
+        <h3>Worked example: cooking oil (sample data)</h3>
+        <div class="row"><span class="k">Sales</span><span class="v">3 units a day</span></div>
+        <div class="row"><span class="k">Supplier lead time</span><span class="v">4 days, plus 2 safety days</span></div>
+        <div class="row"><span class="k">Reorder point</span><span class="v">3 × (4 + 2) = 18 units</span></div>
+        <div class="row"><span class="k">On the shelf</span><span class="v">9 units — below the point, so reorder</span></div>
+        <div class="row"><span class="k">Order quantity</span><span class="v">3 × (4 + 2 + 7) − 9 = 30 units</span></div>
+        <p class="fine" style="margin-top:14px">The 7 is a week of extra selling, so the owner is not back at the supplier the next day.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ALIBABA BUYERS ============ -->
+<section class="sec tint" id="goal">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>The goal: turn African retailers into Alibaba.com buyers.</h2>
+      <p class="lead">Alibaba.com has the suppliers. African retailers have the demand. Three gaps stand between them, and NovaStock closes each one.</p>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <span class="chip">First MVP</span>
+        <h3>Knowing what to buy</h3>
+        <p>The reorder signal tells the owner which product, how many units and why, so the first order is based on data, not a hunch.</p>
+      </div>
+      <div class="card">
+        <span class="chip next">Next</span>
+        <h3>Trusting who to buy from</h3>
+        <p>Approved supplier recommendations on Alibaba.com, ranked on price, reliability and lead time.</p>
+      </div>
+      <div class="card">
+        <span class="chip next">Then</span>
+        <h3>Paying without a bank account</h3>
+        <p>Mobile money or card. NovaStock handles conversion and settlement with the supplier behind the scenes.</p>
+      </div>
+    </div>
+    <p class="honest">NovaStock is an independent project. It is not an Alibaba.com product, and we do not claim a partnership.</p>
+  </div>
+</section>
+
+<!-- ============ POSITIONING ============ -->
+<section class="sec" id="positioning">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>We are not building another B2B distributor.</h2>
+      <p class="lead">The model that buys, stores and delivers the stock has already been tried across Africa at scale — with a lot of capital, and a hard landing.</p>
+    </div>
+    <div class="two">
+      <div class="box">
+        <h3>What happened next door</h3>
+        <ul class="bullets">
+          <li><strong>Wasoko</strong> (Kenya) and <strong>MaxAB</strong> (Egypt) merged into what was billed as Africa's largest B2B commerce platform, after a reported $501m valuation for Wasoko.</li>
+          <li><strong>Alerzo</strong> (Nigeria) restructured and cut staff.</li>
+          <li><strong>eBee</strong> (Kenya) reportedly laid off most of its ~50 employees in early 2025.</li>
+          <li><strong>Twiga Foods</strong> (Kenya), which had raised $160m, is regularly cited among the sector's distressed names.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>What we do instead</h3>
+        <ul class="bullets">
+          <li>No stock. No trucks. No inventory risk. No working capital tied up in goods we own.</li>
+          <li>We sell <strong>the decision that precedes the order</strong>, and we earn only when an order actually happens.</li>
+          <li>The decision is the product, not the record: a stock file without lead times cannot produce a signal, and without the signal the order stays a guess.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="honest">None of those companies is focused on DR Congo, and none of them is our competitor in Lubumbashi. The alternatives our first customers actually use are an Excel file on a counter PC, a wholesaler they know, and a notebook — <strong>and the spreadsheet is exactly where we start.</strong></p>
+  </div>
+</section>
+
+<!-- ============ AI ============ -->
+<section class="sec tint" id="ai">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>NovaStock runs on Accio Work: one operator, not one human per shop.</h2>
+      <p class="lead">AI is not the pitch here. It is the operating layer, and it is already how this project is built and run.</p>
+    </div>
+    <div class="flow">
+      <div class="fstep">
+        <div class="bar live"></div>
+        <h3>Research</h3>
+        <p>Scheduled automations monitor competitors and prices on a recurring basis; web extraction turns supplier pages into structured data.</p>
+        <span class="st">In use today</span>
+      </div>
+      <div class="fstep">
+        <div class="bar soon"></div>
+        <h3>Sourcing</h3>
+        <p>Automated sourcing returns matching suppliers on Alibaba.com and produces side-by-side comparison reports, with bulk outreach and negotiation.</p>
+        <span class="st">Ready for the Source step</span>
+      </div>
+      <div class="fstep">
+        <div class="bar live"></div>
+        <h3>Operating</h3>
+        <p>The reorder logic is packaged as a reusable, auditable skill instead of being re-explained by a person, and the product catalogue lives in a knowledge base.</p>
+        <span class="st">In use today</span>
+      </div>
+      <div class="fstep">
+        <div class="bar live"></div>
+        <h3>Scaling</h3>
+        <p>The same agent stack serves the next shop. Gross margin does not depend on hiring one human per retailer added.</p>
+        <span class="st">The thesis</span>
+      </div>
+    </div>
+    <p class="honest">Two limits, stated plainly. Native Alibaba International data integration is still being built, so supplier work runs through a browser today. And none of this has been put in front of a retailer yet — that is what the pilot is for.</p>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="sec" id="pricing">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Two plans and a commission, so we earn when owners restock.</h2>
+      <p class="lead">A simple monthly plan for the tools, plus a small commission when an order goes through NovaStock. If the owner does not restock, we do not get paid for it.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>Pro</h3>
+        <p class="fine">For one shop, one stock register</p>
+        <p class="price">$5 <small>per month</small></p>
+        <ul class="bullets">
+          <li>Stockout management: see what is about to run out, and when.</li>
+          <li>Recommendation of an approved supplier for each reorder.</li>
+        </ul>
+        <p class="fine" style="margin-top:auto; padding-top:18px">Supplier recommendations arrive with the Source step, our next release.</p>
+      </div>
+      <div class="plan">
+        <h3>Enterprise</h3>
+        <p class="fine">For owners with more than one shop or stock point</p>
+        <p class="price">$10 <small>per month</small></p>
+        <ul class="bullets">
+          <li>Everything in Pro.</li>
+          <li>Multiple registers: keep each shop or stock point separate, in one account.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="plans-foot">
+      <strong>Plus a commission when an order goes through</strong>
+      <span>Under review: we are testing whether this belongs on the transaction, or on the sourcing side and paid by the supplier. Mobile money operators already take their own cut of every payment, and stacking a second one on the retailer is the wrong place to start.</span>
+    </div>
+    <p class="honest">This pricing is planned, not live. NovaStock is pre-MVP and charges no one today. We will test the plans and amounts with our first pilot retailers before we fix them.</p>
+  </div>
+</section>
+
+<!-- ============ FOUNDER ============ -->
+<section class="sec tint" id="founder">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Built by a founder who already ships for Lubumbashi SMEs.</h2>
+    </div>
+    <div class="founder">
+      <div class="avatar" aria-hidden="true">BK</div>
+      <div>
+        <p><strong>Benson Kapoya</strong>, 18, Computer Science student at Université Don Bosco de Lubumbashi (UDBL).</p>
+        <p style="margin-top:14px; color:var(--muted)">Benson already runs <strong>NEXORA</strong>, a live AI and WhatsApp automation business with SME clients in Lubumbashi: a clinic, a restaurant and a solar company. Those are not retail shops, and we do not claim they are.</p>
+        <p style="margin-top:14px; color:var(--muted)">What NEXORA shows is that he can win and serve SME clients in this market while studying, and that he delivers. Retail pilots are the next step, not an asset we hold today. We are also the only founder today — a real risk, stated rather than dressed up — and recruiting an advisor and a first field agent is part of the pilot plan.</p>
+        <div class="tags">
+          <span>Lubumbashi, DR Congo</span>
+          <span>UDBL, Computer Science</span>
+          <span>Founder of NEXORA</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAYMENTS ============ -->
+<section class="sec" id="payments">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Payment that works the way Africa actually pays.</h2>
+      <p class="lead">No wire transfers, no foreign bank accounts. Checkout is designed around mobile money and card, because that is already how these owners transact every day.</p>
+    </div>
+    <div class="two">
+      <div class="box">
+        <ul class="bullets">
+          <li>No bank account required: pay international suppliers from a mobile wallet.</li>
+          <li>Cross-border made local: NovaStock converts and settles with the supplier, and the owner sees one simple payment.</li>
+           <li>Built for low connectivity: USSD and lightweight mobile data, not only fast broadband.</li>
+           <li>Crossing the border is a real step, not an afterthought: importing into DR Congo means customs and clearance, and Kasumbalesa on the Zambian border is one of the country's main entry points. Working out who handles that paperwork is part of this step, not a detail we have skipped.</li>
+        </ul>
+        <p class="honest" style="margin-top:22px">Payments are roadmap, not product. Moving money across borders is a licensed activity, and the DRC introduced a new authorisation regime for digital platforms and fintechs in March 2026. We will not hold customer funds: the design routes settlement through a licensed provider, and we will take legal advice before this step ships.</p>
+      </div>
+      <div class="box">
+        <p class="chip">Design concept</p>
+        <div style="background:var(--tint); border-radius:12px; padding:18px; margin-top:6px">
+          <p class="fine"><strong style="color:var(--ink)">Sample order</strong><br>30 cooking oil, 16 rice</p>
+          <div class="row"><span class="k">Mobile money</span><span class="v">Confirm with a USSD prompt</span></div>
+          <div class="row"><span class="k">Card</span><span class="v">Visa or Mastercard</span></div>
+          <div style="margin-top:16px; text-align:center; background:var(--deep); color:#fff; padding:12px; border-radius:10px; font-weight:600; font-size:.9rem">Pay supplier</div>
+        </div>
+        <p class="fine" style="margin-top:14px">This is not a live payment flow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATUS ============ -->
+<section class="sec tint" id="status">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Where we are today, said plainly.</h2>
+      <p class="lead">We publish what exists and what does not, and we update this list as it changes.</p>
+    </div>
+    <div class="two">
+      <div class="box">
+        <h3>What exists</h3>
+        <ul class="bullets">
+          <li>A first round of retailer interviews in Lubumbashi — which corrected our initial premise rather than confirming it.</li>
+          <li>The concept and the end-to-end user journey.</li>
+          <li>Interface design for all four steps.</li>
+          <li>An interactive prototype of Record and Reorder, running on sample data.</li>
+          <li>A founder already serving SME clients through NEXORA.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>What does not exist yet</h3>
+        <ul class="bullets">
+          <li>A production app. Next step: build the first MVP, covering Record and Reorder.</li>
+          <li>Pilot retailers. We will recruit and test with them in Lubumbashi, starting with the shops that already keep a stock file.</li>
+          <li>Revenue, commercial customers or external funding. The pricing on this page is planned.</li>
+          <li>Supplier matching and payments. Both are on the roadmap.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>Investor, mentor or future retailer?</h2>
+    <p class="lead">We are building NovaStock in the open from Lubumbashi. If you can help us get the first replenishment flow right, write to us.</p>
+    <a class="mail" href="mailto:novastock.com@gmail.com">novastock.com@gmail.com</a>
+    <p class="loc">Benson Kapoya, founder of NEXORA and NovaStock, Lubumbashi, DR Congo</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <span><strong style="color:#eaf4f0">NovaStock</strong>, restocking decisions for African retailers</span>
+      <span>© 2026 Lubumbashi, DR Congo</span>
+    </div>
+    <p class="disc">The prototype and interface previews on this page are design concepts running on sample data, not a live application. Record and Reorder are the first MVP scope. Source and Pay are on the roadmap. Pricing is planned and not billed today. NovaStock is independent of Alibaba.com.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* In-memory sample data only. No storage APIs. */
+  var items=[
+    {name:"Sugar 1 kg",stock:24,daily:4,lead:3},
+    {name:"Cooking oil 1 L",stock:9,daily:3,lead:4},
+    {name:"Bar soap",stock:40,daily:5,lead:3},
+    {name:"Rice 5 kg",stock:18,daily:2,lead:5}
+  ];
+  var SAFETY=2, SELL=7;
+  var offline=false, tab="count";
+
+  function rp(i){ return i.daily*(i.lead+SAFETY); }
+  function low(i){ return i.stock<=rp(i); }
+  function qty(i){ return Math.max(0, i.daily*(i.lead+SAFETY+SELL)-i.stock); }
+  function cover(i){ return Math.floor(i.stock/i.daily); }
+
+  var list=document.getElementById("list");
+  var foot=document.getElementById("foot");
+  var tabCount=document.getElementById("tab-count");
+  var tabReorder=document.getElementById("tab-reorder");
+  var offlineBox=document.getElementById("offline");
+
+  function renderCount(){
+    var h="";
+    for(var n=0;n<items.length;n++){
+      var i=items[n];
+      h+='<div class="item"><div class="nm"><b>'+i.name+'</b>'+
+         '<small>'+i.stock+' on shelf · sells '+i.daily+'/day · supplier '+i.lead+' days</small></div>'+
+         '<span class="pill '+(low(i)?'low':'ok')+'">'+(low(i)?'Low':'OK')+'</span></div>';
+    }
+    list.innerHTML=h;
+  }
+
+  function renderReorder(){
+    var h="";
+    for(var n=0;n<items.length;n++){
+      var i=items[n];
+      if(low(i)){
+        h+='<div class="item"><div class="nm"><b>'+i.name+'</b>'+
+           '<small>reorder point '+rp(i)+' · '+i.stock+' on shelf · '+cover(i)+' days of cover left</small></div>'+
+           '<span class="qty">order '+qty(i)+'</span></div>';
+      } else {
+        h+='<div class="item"><div class="nm"><b>'+i.name+'</b>'+
+           '<small>reorder point '+rp(i)+' · '+i.stock+' on shelf · '+cover(i)+' days of cover left</small></div>'+
+           '<span class="pill ok">No order</span></div>';
+      }
+    }
+    list.innerHTML=h;
+  }
+
+  function render(){
+    if(tab==="count"){ renderCount(); } else { renderReorder(); }
+    foot.textContent = offline
+      ? "Offline: records are queued on the device and sync later. Nothing is lost."
+      : "Sample data. Nothing is stored.";
+  }
+
+  function setTab(which){
+    tab=which;
+    tabCount.setAttribute("aria-selected", which==="count" ? "true":"false");
+    tabReorder.setAttribute("aria-selected", which==="reorder" ? "true":"false");
+    render();
+  }
+
+  tabCount.addEventListener("click", function(){ setTab("count"); });
+  tabReorder.addEventListener("click", function(){ setTab("reorder"); });
+  offlineBox.addEventListener("change", function(){ offline=offlineBox.checked; render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
